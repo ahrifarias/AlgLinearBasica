@@ -44,11 +44,12 @@ def RedGaussManual(lista,matriz):
     RedGaussManual([[3,1,0,6,4],[3,2,0,5,4],[3,3,0,7,4],[-1,1,3,4],[-3,1,2,-4,4],[3,3,1,-6,4],[3,3,2,8,4],[2,3,-RAT(1)/22,4],[2,2,-RAT(1)/10,4],[2,1,RAT(1)/2,4]],MatA)    """
     foldlist=[matriz]
     for ii in lista:
-        if ii[0]>0:
-            foldlist.append(OpElem(*ii,matriz.rows)*foldlist[-1])
-        else:
-            ii[0] = -ii[0]
-            foldlist.append(foldlist[-1]*OpElem(*ii,matriz.cols))
+         if ii[0]>0:
+                foldlist.append(OpElem(*ii,matriz.rows)*foldlist[-1])
+         else:
+                ii[0] = -ii[0]
+                foldlist.append(foldlist[-1]*OpElem(*ii,matriz.cols))          
+                
     return foldlist
 
 ####
@@ -64,11 +65,11 @@ def oquefazer(matriz):
         print("A matriz está escalonada, pode interpretar as equações ou continuar reduzindo até chegar numa matriz diagonal.")
         elmntSUP=next(((ii,jj) for  ii in range(matriz.rows) for jj in range(ii+1,matriz.rows)  if matriz[ii,jj]!=0),-1)
         if elmntSUP==-1:
-            print("A matriz já está diagonalizada, pode interpretar as equações")
+            print("A matriz já está em forma Gauss-Jordan, pode interpretar as equações")
         else:
             elmntSUPAux=(elmntSUP[0]+1,elmntSUP[1]+1)
-            return print("\n Se quiser zera a diagonal superior, voce pode zerar o elemento ",elmntSUPAux, ". Como?\n Substitua a  linha ",elmntSUPAux[0], 
-                 "multiplicando a  linha  ", elmntSUPAux[1], "por ", matriz[elmntSUP],  "vezes e somando com a linha", elmntSUPAux[0],
+            return print("\n Se quiser zerar a diagonal superior, você pode zerar o elemento ",elmntSUPAux, ". Como?\n Substitua a  linha ",elmntSUPAux[0], 
+                 "multiplicando a  linha  ", elmntSUPAux[1], "por ",- matriz[elmntSUP]/matriz[elmntSUP[1],elmntSUP[1]],  "vezes e somando com a linha", elmntSUPAux[0],
                  "isto é;\n linha",elmntSUPAux[0],"-> linha",elmntSUPAux[0],"+ ",- matriz[elmntSUP]/matriz[elmntSUP[1],elmntSUP[1]] ,"x linha",elmntSUPAux[1], 
                      "\n Com qual comando? adicione na lista ",[3,elmntSUPAux[0],elmntSUPAux[1],- matriz[elmntSUP]/matriz[elmntSUP[1],elmntSUP[1]]])
         
@@ -77,7 +78,7 @@ def oquefazer(matriz):
     else:
         elemAux=(elmnt[0]+1,elmnt[1]+1)
         return print("você deveria zerar o elemento ",elemAux, ". Como?\n Substitua a  linha ",elemAux[0], 
-                 "multiplicando a  linha  ", elemAux[1], "por ", matriz[elmnt],  "vezes e somando com a linha", elemAux[0],
+                 "multiplicando a  linha  ", elemAux[1], "por ", - matriz[elmnt]/matriz[elmnt[1],elmnt[1]],  "vezes e somando com a linha", elemAux[0],
                  "isto é;\n linha",elemAux[0],"-> linha",elemAux[0],"+ ",- matriz[elmnt]/matriz[elmnt[1],elmnt[1]] ,"x linha",elemAux[1], 
                      "\n Com qual comando? adicione na lista ",[3,elemAux[0],elemAux[1],- matriz[elmnt]/matriz[elmnt[1],elmnt[1]]])
 
@@ -124,6 +125,17 @@ def SaoLI(Vetores):
          print("Neste caso escalonando a matriz  [ver comando   MATRIZ.rref() ], pode-se ver que pelo menos uma das linhas é zero; pelo qual:\n \n posto(A)=",Rango,"<",dimn,
               "= número de vetores .\n \n Portanto os vetores NÃO são LI; isto é, um dos vetores pode-se escrever como soma dos outros.\n",
               "Além disso, podemos concluir que a dimensão do espaço gerado é: ", Rango )
+    else:
+        print("Neste caso escalonando a matriz  [ver comando   MATRIZ.rref() ], pode-se ver que todas as linhas são distintas de zero; pelo qual:\n \n posto(A)=",Rango,
+              "=",dimn, "= número de vetores.\n \n Em consequência os vetores são LI; e portanto a dimensão do espaço gerado pelos vetores é: ",  Rango )
+        
+
+def EspacoGerado(Vetores):
+    Rango=Matrix(Vetores).rank()
+    dimn=Matrix(Vetores).rows
+    print("O espaço gerado é o conjunto de combinações lineares.\n")
+    if dimn!=Rango:
+         print(" ", Rango )
     else:
         print("Neste caso escalonando a matriz  [ver comando   MATRIZ.rref() ], pode-se ver que todas as linhas são distintas de zero; pelo qual:\n \n posto(A)=",Rango,
               "=",dimn, "= número de vetores.\n \n Em consequência os vetores são LI; e portanto a dimensão do espaço gerado pelos vetores é: ",  Rango )
